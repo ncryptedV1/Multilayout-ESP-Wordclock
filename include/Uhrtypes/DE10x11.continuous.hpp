@@ -37,15 +37,15 @@ public:
 
     virtual const void getMinuteArray(uint16_t *returnArr,
                                       uint8_t col) override {
-        uint16_t numPixelsWordMatrix = rowsWordMatrix() * colsWordMatrix();
-
-        // starting from bottom right corner the first minute LED comes after 3 unused LEDs
-        const uint8_t offset = 3;
+        const uint8_t realNrCols = 12;
+        const uint8_t realNrRows = 11;
+        // starting from bottom left corner, the first minute LED comes after 2 unused LEDs
+        const uint8_t offset = 2;
+        const uint16_t start = realNrCols * realNrRows - 1 - offset;
 
         for (uint8_t i = 0; i < 4; i++) {
             // i*2: skip every second LED
-            // 3-i: LEDs are in reverse order
-            returnArr[3-i] = numPixelsWordMatrix + offset + (i * 2);
+            returnArr[i] = start - (i * 2);
         }
     };
 
