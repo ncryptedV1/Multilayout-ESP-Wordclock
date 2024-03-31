@@ -10,7 +10,7 @@
 /*       German       */
 /**********************/
 //
-#define DEFAULT_LAYOUT Ger10x11
+#define DEFAULT_LAYOUT Ger10x11Continuous
 // 10 rows, 11 LEDs per row + 4 LEDs for minutes
 //
 // #define DEFAULT_LAYOUT Ger10x11Alternative
@@ -33,6 +33,11 @@
 // #define DEFAULT_LAYOUT Ger10x11Nero
 // 10 rows, each 11 LED's per row + 4 LED's for minutes, with the layout
 // from the Github user @n3roGit
+//
+// #define DEFAULT_LAYOUT Ger10x11Continuous
+// 10 rows, each 11 LED's per row. Useful when using a full strip for ease of installation instead of cutting and wiring.
+// For each new row, there is one LED ignored as for the folding of the LED strip.
+// Additionally, the minute LEDs are placed with spacing between them instead of just 4 continuous LEDs.
 //
 // #define DEFAULT_LAYOUT Ger11x11
 // 11 rows, each 11 LED's per row + 4 LED's for minutes
