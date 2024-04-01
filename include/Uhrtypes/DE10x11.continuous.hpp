@@ -53,26 +53,27 @@ public:
 
     virtual const uint16_t getFrontMatrixIndex(const uint8_t row, uint8_t col) {
 
-        uint8_t newColsWordMatrix = colsWordMatrix();
-        uint16_t numPixelsWordMatrix = rowsWordMatrix() * colsWordMatrix();
+        uint8_t nrCols = colsWordMatrix();
 
-        if (G.buildTypeDef == BuildTypeDef::DoubleResM1) {
-            newColsWordMatrix = 2 * colsWordMatrix() - 1;
-            numPixelsWordMatrix = rowsWordMatrix() * newColsWordMatrix;
-            col *= 2;
-        }
         if (row % 2 != 0) {
-            
-            col = newColsWordMatrix - col - 1;
+            col = nrCols - col - 1;
         }
-        uint16_t returnValue = col + (row * newColsWordMatrix);
+        uint16_t returnValue = col + (row * nrCols);
 
         // we got a dead LED every 11 LEDs
         returnValue += returnValue / 11;
 
+        // the dead LEDs basically form a 12th column -> increased real max pixel count
+        uint16_t numPixelsWordMatrix = rowsWordMatrix() * (colsWordMatrix() + 1);
         if (returnValue > numPixelsWordMatrix) {
-            Serial.println(
-                "[ERROR] getFrontMatrixIndex() returnValue out of Bounds");
+            Serial.print("[ERROR] getFrontMatrixIndex(): Index (");
+            Serial.print(returnValue);
+            Serial.print(") out of bounds. Row: ");
+            Serial.print(row);
+            Serial.print(", Col: ");
+            Serial.print(col);
+            Serial.print(", Max Index: ");
+            Serial.println(numPixelsWordMatrix);
         }
 
         return returnValue;
