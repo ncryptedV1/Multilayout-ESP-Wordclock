@@ -1176,10 +1176,6 @@ void ClockWork::loop(struct tm &tm) {
         }
         delay(100);
 
-        if (G.mqtt.state && !mqtt.getConnected()) {
-            mqtt.reInit();
-        }
-
         eeprom::write();
         break;
     }
@@ -1316,8 +1312,12 @@ void ClockWork::loop(struct tm &tm) {
             for (uint8_t row = 0; row < usedUhrType->rowsWordMatrix(); row++) {
                 frontMatrix[row] = num32BitWithOnesAccordingToColumns();
             }
+        }
+
+        if (parametersChanged) {
             led.setbyFrontMatrix(Foreground, false);
             led.show();
+            parametersChanged = false;
         }
         break;
     }
@@ -1337,6 +1337,11 @@ void ClockWork::loop(struct tm &tm) {
         calcClockface();
 
         switch (changesInClockface()) {
+        case WordclockChanges::Minute:
+            lastMinuteArray = minuteArray;
+            memcpy(&lastFrontMatrix, &frontMatrix, sizeof lastFrontMatrix);
+            led.set(WordclockChanges::Minute);
+            break;
         case WordclockChanges::Words:
             lastMinuteArray = minuteArray;
             memcpy(&lastFrontMatrix, &frontMatrix, sizeof lastFrontMatrix);
